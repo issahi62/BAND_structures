@@ -6,7 +6,7 @@ close all
 clear 
 
 %% FIGURE 
-figure('Color', 'white'); 
+figure('Color', 'white', 'Units', 'normalized', 'Outerposition', [0 0 1 1] ); 
 
 %% DASHBOARD 
 L = 1; %% Lattice constant
