@@ -15,17 +15,28 @@ end
 
 NH = P*Q*R;
 
+% SECTION TO TAKE A WINDOW IN THE FOURIER SPACE
 p= [-floor(P/2): floor(P/2)]; %indices along x
-q= [-floor(Q/2): floor(Q/2)]; 
+q= [-floor(Q/2): floor(Q/2)];  
 r= [-floor(R/2): floor(R/2)]; 
 
 
 A  = fftshift(fftn(A))/(Nx*Ny*Nz); 
 
 
-pO = 1+floor(Nx/2); 
-qO = 1+ floor(Ny/2);
-rO = 1+floor(Nz/2);
+pO = 1 + floor(Nx/2); 
+qO = 1 + floor(Ny/2);
+rO = 1 + floor(Nz/2);
+
+%% SELECTION OF WINDOWS WHICH EXPLAINS SPATIAL HARMONICS
+if 0
+np1 = pO - floor(P/2); 
+np2 = pO + floor(P/2); 
+nq1 = qO - floor(Q/2); 
+nq2 = qO + floor(Q/2); 
+nr1 = rO - floor(R/2); 
+nr2 = rO + floor(R/2);
+end
 
 
 for rrow = 1:R
