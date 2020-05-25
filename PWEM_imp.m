@@ -131,18 +131,19 @@ P = 3;
 Q = P;
 ERC = convmat(ER, P, Q); 
 URC = convmat(UR, P, Q); 
+%URC = diag(ones(Nx, Ny)); 
 
 
-%% COMPUTE LIST OF BLOCH VECTORS
+%% COMPUTE LIST OF BLOCH VECTORS (IRREDUCIBLE BRILLOUIN ZONE)
 t1 = [L; 0]; 
 t2 = [0; L]; 
 
-T1 = 2*pi./t1;
+T1     = 2*pi./t1;
 T1(2)  = 0; 
-T2 = 2*pi./t2; 
-T2(1) = 0; 
+T2     = 2*pi./t2; 
+T2(1)  = 0; 
 
-G = [0; 0];
+G = 0.0.*T1;
 X = 0.5.*T1;
 M = 0.5*T1 + 0.5*T2; 
 
@@ -192,10 +193,10 @@ for nb = 1: NBETA
     KY = diag(sparse(KY(:))); 
     
     %% BUILD EIGEN-VALUE PROBLEM AX = B
-    
+    % TE MODE
    A = KX/URC*KX+KY/URC*KY; 
    B = ERC; 
-   
+   % TM MODE
    A1 = KX/ERC*KX + KY/ERC*KY; 
    B1 = URC; 
    
