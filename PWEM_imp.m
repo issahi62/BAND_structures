@@ -8,30 +8,36 @@ clear
 
 %% FIGURE 
 
-figure('Color', 'white'); 
+figure('Color', 'w', 'Units', 'normalized', 'Outerposition', [0 0 1 1]); 
 
 %% DASHBOARD 
-L = 1; %% Lattice constant
+L = 1; %% Lattice period
 ur = 1; %% permeability 
-er1 =9;
+er1 =9; %% dielectric permittivity
 er2 = 1; %% permittivity
-r = 0.4*L; 
-NG2X = 40;
+r = 0.4*L; %% radius of the unit cell
+NG2X = 40; %% Resolution of the Band structures
 
-%% SHAPES 
+%% SHAPES TO DETERMINE THEIR RESPECTIVE BANDS 
 square = 0; 
 triangle =0;
 ring_hollow = 0;
 ring_resonator = 1; 
 
-%% BUILD A UNIT CELL 
+%% BUILD A UNIT CELL (DASHBOARD)
 N = 100; %% any number 
-Nx = 2*N+1; %% Number of grid in x ( 2N + 1); 
-Ny = Nx; %%  ---- in y 
-dx = L/Nx; %% stepsize
-dy = L/Ny; 
+Nx = 2*N+1; %% Number of grid in x ( 2N + 1); INVERSION SYMMETRY 
+Ny = Nx; %%  ---- in y axis
+dx = L/Nx; %% stepsize in x-axis
+dy = L/Ny; %% stepsize in y-axis
 xa = [0:Nx-1]*dx;  xa = xa - mean(xa); 
 ya = [0:Nx-1]*dy;  ya = ya - mean(ya);
+
+%% CONDITION TO SELECT ONLY ONE LATTICE
+if (square == 1 && triangle == 1 && ring_hollow ==1 && ring_resonator ==1) | ...
+(square == 0 && triangle == 0 && ring_hollow ==0 && ring_resonator ==0)
+    disp('Select one unit Lattice') 
+end 
 
 if square == 1
 [Xa, Ya] = meshgrid(ya, xa); 
