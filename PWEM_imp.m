@@ -13,8 +13,8 @@ figure('Color', 'w', 'Units', 'normalized', 'Outerposition', [0 0 1 1]);
 %% DASHBOARD 
 L = 1; %% Lattice period
 ur = 1; %% permeability 
-er1 =9; %% dielectric permittivity
-er2 = 1; %% permittivity
+er1 =9; %% dielectric permittivity  ( inside medium) 
+er2 = 1; %% permittivity             ( surrounding)
 r = 0.4*L; %% radius of the unit cell
 NG2X = 40; %% Resolution of the Band structures
 
@@ -39,7 +39,8 @@ if (square == 1 && triangle == 1 && ring_hollow ==1 && ring_resonator ==1) | ...
     disp('Select one unit Lattice') 
 end 
 
-if square == 1
+%% SQUARE LATTICE
+if square == 1 
 [Xa, Ya] = meshgrid(ya, xa); 
 AA = sqrt(Xa.^2 + Ya.^2)<= r.^2; 
 ER = er1 + (er2-er1)*AA; 
@@ -80,6 +81,8 @@ end
 ER =  er1 + (er2-er1)*ER'; 
 end 
 
+
+%% RING - HOLLOW CORE LATTICE
 if ring_hollow == 1 
 c0 = 3e-8; 
 N = [Nx, Ny];    
@@ -112,6 +115,9 @@ ER = er1 + (er2-er1)*eps;
 % drawnow();
 end 
 
+
+%% SQUARE LATTICE LATTICE
+
 if ring_resonator == 1 
     N = [Nx, Ny]; 
     inner_rad = 60; outer_rad = 90;
@@ -126,7 +132,7 @@ if ring_resonator == 1
     ER = eps_ring; 
 end 
 
-%% COMPUTE CONVOLUTION MATRICES
+%% COMPUTE CONVOLUTION MATRICES  (SECTION TO COMPUTE THE FOURIER DOMAIN OF THE LATTICE)
 P = 3;
 Q = P;
 ERC = convmat(ER, P, Q); 
@@ -135,17 +141,17 @@ URC = convmat(UR, P, Q);
 
 
 %% COMPUTE LIST OF BLOCH VECTORS (IRREDUCIBLE BRILLOUIN ZONE)
-t1 = [L; 0]; 
+t1 = [L; 0];  %% Translation vectors in the real space. L = lattice constant
 t2 = [0; L]; 
 
-T1     = 2*pi./t1;
-T1(2)  = 0; 
-T2     = 2*pi./t2; 
-T2(1)  = 0; 
+T1     = 2*pi./t1; %% Reciprocal lattice 
+T1(2)  = 0;        %%Remove the inf in the TI. 
+T2     = 2*pi./t2;  
+T2(1)  = 0;        %% Remove the inf in the T2. 
 
-G = 0.0.*T1;
-X = 0.5.*T1;
-M = 0.5*T1 + 0.5*T2; 
+G = 0.0.*T1;       %% Gamma point
+X = 0.5.*T1;       %% X point
+M = 0.5*T1 + 0.5*T2; %% M point
 
 
 % GENERATE LIST 
@@ -153,11 +159,12 @@ L1 = norm(G-X); % To find the length from Gamma to X to M in the reduced
 L3 = norm(M-G); % Brillioun zone of a square lattice. 
 L2 = norm(M-X); 
 
-N1 = NG2X; 
-N2 = round(N1*L2/L1); 
-N3 = round(N1*L3/L1);
+N1 = NG2X;    %% Size of the N1 which was initiated at the top of the codes
+N2 = round(N1*L2/L1);   %% Scaling of the N2 to form the irreducible brillioun zones
+N3 = round(N1*L3/L1);   %% Scaling of the N3. 
 
-%% Bloch wave waves 
+%% Bloch wave waves  %% THIS WHICH WHERE YOU CAN VARY THE G - M % X POINT  INT THE CODES
+%% S0  FROM G1 - X1 & X- M & M-G
 BX = [linspace( G(1), X(1), N1), linspace(X(1), M(1), N2), linspace(M(1), G(1), N3)];  
 BY = [linspace( G(2), X(2), N1), linspace(X(2), M(2), N2), linspace(M(2), G(2), N3)];
 
@@ -173,11 +180,13 @@ NBETA = length(BETA(1,:));
 
 KP =[ 1, N1, N1+N2-1, N1+N2+N3-2]; % keynotes
 
-KL = { '\Gamma','X',  'M', '\Gamma'};
+KL = { '\Gamma','X',  'M', '\Gamma'};  %% CHANGE THESE T0 CHANGE THE AXES OF THE PLOTS
 %% PWEM 
 
+
+
 % COMPUTE SPATIAL HARMONIC INDICES  %% MILLER INDICES
-p= [-floor(P/2): floor(P/2)]; %indices along x
+p= [-floor(P/2): floor(P/2)]; %indices along x  % SPATIAL FREQUENCY
 q= [-floor(Q/2): floor(Q/2)]; % indices along y
 
 for nb = 1: NBETA 
