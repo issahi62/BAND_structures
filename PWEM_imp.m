@@ -301,11 +301,4 @@ ylabel('Normalized Frequency, $\omega$', 'Interpreter', 'LaTEx');
 
 
 
-%% JUST TO MAKE THE FIELD SIMPLE TO DO 
-
-%%  V(:1)
-%% V = RESHAPE(V(:, nbx), P, Q));  V(:, 2), V(:, 3), V(:, 4) %% V(:, :, nb) %% V(9, 9, 1), V(9, 9, 2)....
-%% EF = ifft(ifftshitf(V))*(Nx*Ny); 
-
-% V = zeros(p, q, nb)
 VST( : , :, nb) = V; 
