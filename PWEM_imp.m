@@ -209,7 +209,20 @@ for nb = 1: NBETA
    A1 = KX/ERC*KX + KY/ERC*KY; 
    B1 = URC; 
    
-   %% SOLVE GENERALIZED EIGEN-VALUE PROBLEM
+   %% SOLVE GENERALIZED EIGEN-VALUE PROBLEM  
+   % | -1  0 ]
+    %    0  1]  9 eigenvalues diagonal we take the diagonal matrices
+    
+   % V = [ 9 * 9] 
+   % V(: 1)  9 data points 
+   % VS = reshape(V(:1)); 
+   
+ % [ 3*3] 
+   % create a zeros matrix 
+   % ZZ = zeros( same size of Nx & Ny] 
+   % ZZ(index1:index2, indy1:indy2) = VS; 
+   %% inverse fourier...
+
    [V, D] =  eig(full(A), full(B));  
    D = real(sqrt(diag(D))); 
    KO(:, nb) = sort(D); 
